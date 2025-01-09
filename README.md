@@ -25,6 +25,6 @@ The data shown are current as of October 31, 2023, and will be updated as the la
 
 [To add when completed]
 - Data Sources:
-    - Government of Canada. (2024). *Greenhouse Gas Reporting Program (GHGRP) - Facility Greenhouse Gas (GHG) Data* <br>(f28ef77a-cc0b-4353-90ac-c9d97f855bc8; 2022) [PDGES-GHGRP-GHGEmissionsSourcesGES-2022.csv]. Canada.ca. [Source](https://open.canada.ca/data/en/dataset/a8ba14b7-7f23-462a-bdbb-83b0ef629823)
+    - Government of Canada. (2024). *Greenhouse Gas Reporting Program (GHGRP) - Facility Greenhouse Gas (GHG) Data* (f28ef77a-cc0b-4353-90ac-c9d97f855bc8; 2022) [PDGES-GHGRP-GHGEmissionsSourcesGES-2022.csv]. Canada.ca. [Source](https://open.canada.ca/data/en/dataset/a8ba14b7-7f23-462a-bdbb-83b0ef629823)
 
 - Tools & Libraries

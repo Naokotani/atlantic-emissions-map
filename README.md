@@ -12,6 +12,12 @@ The Maritime Emissions Map (MEM) displays the latest reported greenhouse gas (GH
 
 The data shown are current as of October 31, 2023, and will be updated as the latest data is released from the Government of Canada's [Greenhouse Gas Reporting Program (GHGRP)](https://www.canada.ca/en/environment-climate-change/services/climate-change/greenhouse-gas-emissions/facility-reporting/about.html). Emissions data are self-reported as mandated in Section 46 of the *Canadian Environmental Protection Act, 1999*.
 
+## Running
+
+Run `docker compose --profile frontend up` in the root directory to launch api and database and expose them to localhost:8080.
+
+## Api Health
+http://localhost/ping should return a status 200 and http://localhost:8080/actuator/health should return an api health check.
 
 ## Project Resources
 

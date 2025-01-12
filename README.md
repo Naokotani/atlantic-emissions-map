@@ -17,7 +17,7 @@ The data shown are current as of October 31, 2023, and will be updated as the la
 Run `docker compose --profile frontend up` in the root directory to launch api and database and expose them to localhost:8080.
 
 ## Api Health
-http://localhost/ping should return a status 200 and http://localhost:8080/actuator/health should return an api health check.
+http://localhost:8080/ping should return a status 200 and http://localhost:8080/actuator/health should return an api health check.
 
 ## Project Resources
 

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/ping")
+@RequestMapping("/test")
 public class PingController {
 
     @GetMapping

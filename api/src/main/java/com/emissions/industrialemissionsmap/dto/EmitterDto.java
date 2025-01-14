@@ -12,4 +12,8 @@ public class EmitterDto {
     private float longitude;
     private List<GasDto> gasses;
     private float totalEmissions;
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

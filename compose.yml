@@ -22,8 +22,8 @@ services:
     # names the service.
     image: spring-api
     # Where the source code and Dockerfile live.
-    profiles:
-      - build
+    depends_on: 
+      - db
     build:
       context: ./api/
       dockerfile: ./Dockerfile
@@ -32,24 +32,35 @@ services:
     # Set this so spring can find the db as it differs from on localhost.
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
-    restart: unless-stopped
     networks:
       - backend
-  # Pulls the remote api image and runs
-  api:
-    # names the service.
-    image: naokotani/industrial-ghg-api:setup
-    # Where the source code and Dockerfile live.
-    profiles:
-      - frontend
-    ports: 
-      - 8080:8080
-    # Set this so spring can find the db as it differs from on localhost.
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
-    restart: unless-stopped
+  client-nginx:
+    image: client-nginx
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
     networks:
       - backend
+    ports:
+      - 8081:80
+  client-vite:
+    image: client-vite
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile-vite
+    volumes:
+      - type: bind
+        source: ./frontend/
+        target: /usr/src/app/
+      - type: volume
+        target: /usr/src/app/node_modules 
+      - type: bind
+        source: ./frontend/vite.config.js
+        target: /usr/src/app/vite.config.js
+    networks:
+      - backend
+    ports:
+      - 5173:5173
 # Creates the volume.
 volumes:
   ghg-data:
@@ -57,3 +68,4 @@ volumes:
 # the frontend and backend.
 networks:
   backend:
+  frontend:

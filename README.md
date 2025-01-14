@@ -14,10 +14,21 @@ The data shown are current as of October 31, 2023, and will be updated as the la
 
 ## Running
 
-Run `docker compose --profile frontend up` in the root directory to launch api and database and expose them to localhost:8080.
+Run `docker compose up` in the root directory. This will launch the Frontend React app, build and start the Java Api, launch 
+the Nginx server and start the database.
 
-## Api Health
-http://localhost:8080/ping should return a status 200 and http://localhost:8080/actuator/health should return an api health check.
+## Usage
+There are two versions of the frontend http://localhost:5173 is the development version. This is being served by Vite with
+hot module reload, so you will see the changes that you make to the frontend as you change the files. The other is at
+http://localhost:8081. This is a production version where the static files have been built and are being served by Nginx
+instead of Vite.
+
+Additionally, you will find the swagger API reference at http://localhost:8080/swagger-ui/index.html.
+This will show the API endpoints provided by the backend. You can also access the rest of the api directly
+through port 8080.
+
+Finally, you can access the database directly through http://localhost:5432 (IE, to have access to the database in your IDE).
+
 
 ## Project Resources
 

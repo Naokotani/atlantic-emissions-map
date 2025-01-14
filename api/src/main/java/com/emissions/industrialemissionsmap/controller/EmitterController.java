@@ -15,6 +15,7 @@ public class EmitterController {
     @GetMapping
     public ResponseEntity<EmitterDto> emitter(@RequestParam int id) {
         EmitterDto emitter = new EmitterDto();
+        emitter.setId(id);
         return ResponseEntity.ok(emitter);
     }
 }

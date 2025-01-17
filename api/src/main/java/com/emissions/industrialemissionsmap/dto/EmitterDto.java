@@ -6,14 +6,15 @@ import java.util.List;
 @Data
 public class EmitterDto {
     private int id;
-    private String businessName;
+    private String facilityName;
     private String facilityDescription;
-    private float latitude;
-    private float longitude;
-    private List<GasDto> gasses;
-    private float totalEmissions;
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    private double latitude;
+    private double longitude;
+    private double carbonDioxide;
+    private double methane;
+    private double nitrousOxide;
+    private double sulphurHexaflouride;
+    private double hydroflourocarbons;
+    private double perfluorocarbons;
+    private double totalEmissions;
 }

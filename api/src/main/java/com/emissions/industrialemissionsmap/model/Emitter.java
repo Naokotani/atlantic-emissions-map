@@ -1,6 +1,5 @@
 package com.emissions.industrialemissionsmap.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -30,7 +29,7 @@ public class Emitter {
     private String facilityDescriptionFrench;
     private String reportingCompanyLegalName;
     private String reportingCompanyTradeName;
-    private String reportingCompanyBusinessNumber;
+    private int reportingCompanyBusinessNumber;
     private String publicContactName;
     private String publicContactPosition;
     private String publicContactTelephone;

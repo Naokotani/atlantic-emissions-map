@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface EmitterRepository extends JpaRepository<Emitter, Integer> {
     List<Emitter> findAllByYearAndFacilityProvinceTerritory(int year, String facilityProvinceTerritory);
-    Optional<Emitter> findEmitterByIdAndYear(int id, int year);
     Optional<Emitter> findEmitterByFacilityNameAndYear(String name, int year);
+    Optional<List<Emitter>> findEmittersByReportingCompanyBusinessNumber(int businessNumber);
+    Optional<List<Emitter>> findAllByFacilityName(String facilityName);
 }

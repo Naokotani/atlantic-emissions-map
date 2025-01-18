@@ -34,7 +34,7 @@ public class EmitterCsvRepresentation {
     @CsvBindByName(column = "Reporting Company Trade Name / Nom commercial de la société déclarante")
     private String reportingCompanyTradeName;
     @CsvBindByName(column = "Reporting Company Business Number / Numéro d'entreprise de la société déclarante")
-    private String reportingCompanyBusinessNumber;
+    private int reportingCompanyBusinessNumber;
     @CsvBindByName(column = "Public Contact Name / Nom du responsable des renseignements au public")
     private String publicContactName;
     @CsvBindByName(column = "Public Contact Position / Poste ou Titre du responsable des renseignements au public")

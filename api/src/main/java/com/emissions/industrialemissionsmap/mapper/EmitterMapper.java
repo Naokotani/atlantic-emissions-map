@@ -12,6 +12,7 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface EmitterMapper {
     @Mapping(target = "facilityDescription", source = "facilityDescriptionEnglish")
+    @Mapping(target = "businessNumber", source = "reportingCompanyBusinessNumber")
     @Mapping(target = "totalEmissions", source = "totalEmissionsTonnes")
     @Mapping(target = "carbonDioxide", source = "co2Tonnes")
     @Mapping(target = "methane", source = "ch4Co2TonnesEquivalent")
@@ -39,5 +40,5 @@ public interface EmitterMapper {
         sum += source.getHfc236faCo2TonnesEquivalent();
         sum += source.getHfc245caCo2TonnesEquivalent();
         return sum;
-    };
+    }
 }

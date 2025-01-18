@@ -24,8 +24,8 @@ public class Emitter {
     private String facilityCityOrDistrict;
     private String facilityProvinceTerritory;
     private String facilityPostalCode;
-    private String latitude;
-    private String longitude;
+    private double latitude;
+    private double longitude;
     private String facilityDescriptionEnglish;
     private String facilityDescriptionFrench;
     private String reportingCompanyLegalName;

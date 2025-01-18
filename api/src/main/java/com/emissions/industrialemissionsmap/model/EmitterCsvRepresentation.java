@@ -22,9 +22,9 @@ public class EmitterCsvRepresentation {
     @CsvBindByName(column = "Facility Postal Code / Code postal de l'installation")
     private String facilityPostalCode;
     @CsvBindByName(column = "Latitude")
-    private String latitude;
+    private double latitude;
     @CsvBindByName(column = "Longitude")
-    private String longitude;
+    private double longitude;
     @CsvBindByName(column = "English Facility NAICS Code Description / Description du code SCIAN de l'installation en anglais")
     private String facilityDescriptionEnglish;
     @CsvBindByName(column = "French Facility NAICS Code Description / Description du code SCIAN de l'installation en français")

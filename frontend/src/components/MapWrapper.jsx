@@ -5,7 +5,10 @@ import Map from "./Map";
 import MapForm from "./MapForm";
 
 function MapWrapper() {
-  const [filters, setFilters] = useState({ year: "2022" }); //Default most current data (2023 empty)
+  const [filters, setFilters] = useState({
+    year: "2022", //Default most updated year
+    emissionType: "all", // Default to all emissions
+  });
 
   const [mapData, setMapData] = useState([]); // Store fetched data
 
@@ -22,14 +25,26 @@ function MapWrapper() {
 
         const allFacilities = Object.values(data).flat(); //Arrays inside arrays thing
 
-        setMapData(allFacilities); // Set data to be used in map
+        let filteredData;
+
+        if (filters.emissionType === "all") {
+          // If "all" is selected, no emission type filter is applied
+          filteredData = allFacilities;
+        } else {
+          //Otherwise, filter by selected emission type
+          filteredData = allFacilities.filter(
+            (item) => item[filters.emissionType] > 0 // Check if emission type > 0
+          );
+        }
+
+        setMapData(filteredData); // Set data to be used in map
       } catch (error) {
         console.error("Error fetching map data:", error);
       }
     };
 
     fetchData();
-  }, [filters.year]); // Re-fetch when the year filter changes
+  }, [filters.year, filters.emissionType]); // Re-fetch when the filter changes
 
   return (
     <>

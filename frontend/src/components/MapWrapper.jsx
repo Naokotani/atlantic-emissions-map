@@ -8,6 +8,7 @@ function MapWrapper() {
   const [filters, setFilters] = useState({
     year: "2022", //Default most updated year
     emissionType: "all", // Default to all emissions
+    emissionSource: "all",
   });
 
   const [mapData, setMapData] = useState([]); // Store fetched data
@@ -20,20 +21,22 @@ function MapWrapper() {
         );
 
         const data = await response.json();
-
         console.log(data);
-
         const allFacilities = Object.values(data).flat(); //Arrays inside arrays thing
 
-        let filteredData;
+        // First filter by emission type
+        let filteredData = allFacilities;
 
-        if (filters.emissionType === "all") {
-          // If "all" is selected, no emission type filter is applied
-          filteredData = allFacilities;
-        } else {
-          //Otherwise, filter by selected emission type
-          filteredData = allFacilities.filter(
-            (item) => item[filters.emissionType] > 0 // Check if emission type > 0
+        if (filters.emissionType !== "all") {
+          filteredData = filteredData.filter(
+            (item) => item[filters.emissionType] > 0
+          );
+        }
+
+        // Then filter by source
+        if (filters.emissionSource !== "all") {
+          filteredData = filteredData.filter(
+            (item) => item.facilityDescription === filters.emissionSource
           );
         }
 
@@ -44,7 +47,7 @@ function MapWrapper() {
     };
 
     fetchData();
-  }, [filters.year, filters.emissionType]); // Re-fetch when the filter changes
+  }, [filters.year, filters.emissionType, filters.emissionSource]); // Re-fetch when the filter changes
 
   return (
     <>

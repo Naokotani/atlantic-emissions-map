@@ -1,4 +1,7 @@
 function MapForm({ filters, setFilters }) {
+  const CURRENT_DATA_YEAR = 2022;
+  const START_DATA_YEAR = 2004;
+
   const handleYearChange = (e) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
@@ -27,22 +30,26 @@ function MapForm({ filters, setFilters }) {
     }));
   };
 
+  const generateYearOptions = () => {
+    const years = [];
+    for (let year = CURRENT_DATA_YEAR; year >= START_DATA_YEAR; year--) {
+      years.push(
+        <option key={year} value={year.toString()}>
+          {year}
+        </option>
+      );
+    }
+    return years;
+  };
+
   return (
     <div className="filter-form">
       {/* Year filter */}
       <div className="filter-group">
         <label htmlFor="year">Year:</label>
         <select id="year" value={filters.year} onChange={handleYearChange}>
-          <option value="2023">2023</option>
-          <option value="2022">2022</option>
-          <option value="2021">2021</option>
-          <option value="2020">2020</option>
-          <option value="2019">2019</option>
-          <option value="2018">2018</option>
-          <option value="2017">2017</option>
-          <option value="2016">2016</option>
-          <option value="2015">2015</option>
-          <option value="2014">2014</option>
+          <option value="all">All</option>
+          {generateYearOptions()}
         </select>
       </div>
 

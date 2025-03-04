@@ -7,6 +7,7 @@ import MapForm from "./MapForm";
 function MapWrapper() {
   const [filters, setFilters] = useState({
     year: "2022", //Default most updated year
+    province: "all",
     emissionType: "all", // Default to all emissions
     emissionSource: "all",
   });
@@ -22,7 +23,13 @@ function MapWrapper() {
 
         const data = await response.json();
         console.log(data);
-        const allFacilities = Object.values(data).flat(); //Arrays inside arrays thing
+
+        let allFacilities;
+        if (filters.province === "all") {
+          allFacilities = Object.values(data).flat();
+        } else {
+          allFacilities = data[filters.province] || [];
+        }
 
         // First filter by emission type
         let filteredData = allFacilities;
@@ -47,7 +54,12 @@ function MapWrapper() {
     };
 
     fetchData();
-  }, [filters.year, filters.emissionType, filters.emissionSource]); // Re-fetch when the filter changes
+  }, [
+    filters.year,
+    filters.province,
+    filters.emissionType,
+    filters.emissionSource,
+  ]); // Re-fetch when the filter changes
 
   return (
     <>

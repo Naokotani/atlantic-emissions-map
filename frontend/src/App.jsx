@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "./App.css";
+import "./styles/App.css";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import MapWrapper from "./components/MapWrapper";

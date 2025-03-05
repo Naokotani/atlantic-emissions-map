@@ -2,11 +2,11 @@
 @import "./hero.css";
 
 * {
-  /* background-color: #121212; */
+  background-color: #121212;
 }
 
 #root {
-  max-width: 1280px;
+  width: 100%;
   margin: 0 auto;
   text-align: left;
   background-color: #121212;

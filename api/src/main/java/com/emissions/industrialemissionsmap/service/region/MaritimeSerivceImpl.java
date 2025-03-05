@@ -34,6 +34,6 @@ public class MaritimeSerivceImpl implements MaritimeService {
         List<EmitterDto> novaScotiaEmitterDto = emitterMapper.emittersToEmitterDtos(novaScotiaEmitters);
         List<EmitterDto> newBruswickEmitterDto = emitterMapper.emittersToEmitterDtos(newBrunswickEmitters);
         List<EmitterDto> peiEmitterDto = emitterMapper.emittersToEmitterDtos(peiEmitters);
-        return regionMapper.provincesToMaritime(novaScotiaEmitterDto, newBruswickEmitterDto, peiEmitterDto);
+        return regionMapper.provincesToMaritime(novaScotiaEmitterDto, peiEmitterDto, newBruswickEmitterDto);
     }
 }

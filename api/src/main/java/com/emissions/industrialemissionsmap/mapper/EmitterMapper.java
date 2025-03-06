@@ -23,6 +23,7 @@ public interface EmitterMapper {
     EmitterDto emitterToEmitterDto(Emitter emitter);
     List<EmitterDto> emittersToEmitterDtos(List<Emitter> emitters);
 
+
     @Named("getHydroflourocarbons")
     default double getHydroflourocarbons(Emitter source) {
         double sum = 0;

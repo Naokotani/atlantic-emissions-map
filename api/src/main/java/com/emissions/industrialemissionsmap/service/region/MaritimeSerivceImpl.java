@@ -2,17 +2,21 @@ package com.emissions.industrialemissionsmap.service.region;
 
 import com.emissions.industrialemissionsmap.dto.EmitterDto;
 import com.emissions.industrialemissionsmap.dto.MaritimeDto;
+import com.emissions.industrialemissionsmap.mapper.AggregateEmitterMapper;
 import com.emissions.industrialemissionsmap.mapper.EmitterMapper;
 import com.emissions.industrialemissionsmap.mapper.RegionMapper;
+import com.emissions.industrialemissionsmap.model.AggregateEmitter;
 import com.emissions.industrialemissionsmap.model.DataSet;
 import com.emissions.industrialemissionsmap.model.Emitter;
 import com.emissions.industrialemissionsmap.repository.EmitterRepository;
 import com.emissions.industrialemissionsmap.service.DataSetService;
+import org.mapstruct.Mapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MaritimeSerivceImpl implements MaritimeService {
@@ -44,7 +48,7 @@ public class MaritimeSerivceImpl implements MaritimeService {
     public MaritimeDto getEmitters(List<Integer> years) {
         if(years.size() == 1) {
             return getSingleEmitter(years.getFirst());
-        } else if(years.size() > 2) {
+        } else if(years.size() > 1) {
             return getSummedEmitters(years);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Years list was empty.");
@@ -60,14 +64,13 @@ public class MaritimeSerivceImpl implements MaritimeService {
     @Override
     public MaritimeDto getSummedEmitters(List<Integer> years) {
         DataSet activeDataSet = dataSetService.findActiveDataSet();
-        List<Object> objects = emitterRepository.sumYearsByFacilityProvinceTerritory(years,  "Nova Scotia", activeDataSet);
-        List<Emitter> novaScotiaEmitters = emitterRepository
-                .findAllByYearAndFacilityProvinceTerritoryAndDataSet(years.getFirst(), "Nova Scotia", activeDataSet);
-        List<Emitter> peiEmitters = emitterRepository
-                .findAllByYearAndFacilityProvinceTerritoryAndDataSet(years.getFirst(), "Prince Edward Island", activeDataSet);
-        List<Emitter> newBrunswickEmitters = emitterRepository
-                .findAllByYearAndFacilityProvinceTerritoryAndDataSet(years.getFirst(), "New Brunswick", activeDataSet);
-        return mapToAtlanticDto(novaScotiaEmitters, peiEmitters, newBrunswickEmitters);
+        List<Object[]> nsAggregateEmitters = emitterRepository.sumYearsByFacilityProvinceTerritory(years,  "Nova Scotia", activeDataSet);
+        List<Object[]> peiAggregateEmitters = emitterRepository.sumYearsByFacilityProvinceTerritory(years,  "Prince Edward Island", activeDataSet);
+        List<Object[]> nbAggregateEmitters = emitterRepository.sumYearsByFacilityProvinceTerritory(years,  "New Brunswick", activeDataSet);
+        List<Emitter> nsEmitters = nsAggregateEmitters.stream().map(AggregateEmitterMapper::mapAggregateEmitterToEmitter).toList();
+        List<Emitter> peiEmitters = peiAggregateEmitters.stream().map(AggregateEmitterMapper::mapAggregateEmitterToEmitter).toList();
+        List<Emitter> nbEmitters = nbAggregateEmitters.stream().map(AggregateEmitterMapper::mapAggregateEmitterToEmitter).toList();
+        return mapToAtlanticDto(nsEmitters, peiEmitters, nbEmitters);
     }
 
     private MaritimeDto mapToAtlanticDto(List<Emitter> novaScotiaEmitters,

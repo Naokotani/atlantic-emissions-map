@@ -1,5 +1,6 @@
 package com.emissions.industrialemissionsmap.repository;
 
+import com.emissions.industrialemissionsmap.model.AggregateEmitter;
 import com.emissions.industrialemissionsmap.model.DataSet;
 import com.emissions.industrialemissionsmap.model.Emitter;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +14,7 @@ public interface EmitterRepository extends JpaRepository<Emitter, Integer> {
     @Query("SELECT e.facilityName, " +
             "e.facilityDescriptionEnglish, " +
             "e.reportingCompanyBusinessNumber, " +
+            "e.facilityProvinceTerritory, " +
             "e.latitude, " +
             "e.longitude, " +
             "SUM(e.totalEmissionsTonnes), " +
@@ -36,8 +38,8 @@ public interface EmitterRepository extends JpaRepository<Emitter, Integer> {
             "FROM Emitter e " +
             "WHERE e.year IN :years AND e.dataSet = :activeDataSet " +
             "AND e.facilityProvinceTerritory = :facilityProvinceTerritory " +
-            "GROUP BY e.facilityName")
-    List<Object> sumYearsByFacilityProvinceTerritory(List<Integer> years, String facilityProvinceTerritory, DataSet activeDataSet);
+            "GROUP BY e.facilityName, e.facilityProvinceTerritory, e.facilityDescriptionEnglish, e.longitude, e.latitude, e.reportingCompanyBusinessNumber")
+    List<Object[]> sumYearsByFacilityProvinceTerritory(List<Integer> years, String facilityProvinceTerritory, DataSet activeDataSet);
     Optional<Emitter> findEmitterByFacilityNameAndYearAndDataSet(String name, int year, DataSet activeDataset);
     Optional<List<Emitter>> findEmittersByReportingCompanyBusinessNumberAndDataSet(int businessNumber, DataSet activeDataset);
     Optional<List<Emitter>> findAllByFacilityNameAndDataSet(String facilityName, DataSet activeataset);

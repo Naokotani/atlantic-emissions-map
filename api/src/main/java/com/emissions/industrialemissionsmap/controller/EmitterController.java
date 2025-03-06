@@ -13,7 +13,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/api/v1/emitter")
 public class EmitterController {

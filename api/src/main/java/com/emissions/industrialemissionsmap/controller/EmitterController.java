@@ -4,6 +4,7 @@ import com.emissions.industrialemissionsmap.dto.EmitterDto;
 import com.emissions.industrialemissionsmap.mapper.EmitterMapper;
 import com.emissions.industrialemissionsmap.model.Emitter;
 import com.emissions.industrialemissionsmap.repository.EmitterRepository;
+import com.emissions.industrialemissionsmap.service.DataSetService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,17 +20,20 @@ public class EmitterController {
 
     private final EmitterRepository emitterRepository;
     private final EmitterMapper emitterMapper;
+    private final DataSetService dataSetService;
 
-    public EmitterController(EmitterRepository emitterRepository, EmitterMapper emitterMapper) {
+    public EmitterController(EmitterRepository emitterRepository, EmitterMapper emitterMapper, DataSetService dataSetService) {
         this.emitterRepository = emitterRepository;
         this.emitterMapper = emitterMapper;
+        this.dataSetService = dataSetService;
     }
 
     @Operation(summary = "Get a single emitter by name and year")
     @GetMapping("/name")
     public ResponseEntity<EmitterDto> emitterByNameAndYear(@RequestParam int year, @RequestParam String name)
     throws ResponseStatusException {
-        Emitter emitter =  emitterRepository.findEmitterByFacilityNameAndYear(name, year)
+        Emitter emitter =  emitterRepository.findEmitterByFacilityNameAndYearAndDataSet(name, year,
+                        dataSetService.findActiveDataSet())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         EmitterDto emitterDto = emitterMapper.emitterToEmitterDto(emitter);
         return ResponseEntity.ok(emitterDto);
@@ -49,7 +53,7 @@ public class EmitterController {
     @GetMapping("/bussiness-number")
     public ResponseEntity<List<EmitterDto>> emitterBussinessId(@RequestParam int number)
             throws ResponseStatusException {
-        List<Emitter> emitters = emitterRepository.findEmittersByReportingCompanyBusinessNumber(number)
+        List<Emitter> emitters = emitterRepository.findEmittersByReportingCompanyBusinessNumberAndDataSet(number, dataSetService.findActiveDataSet())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         List<EmitterDto> emitterDtos = emitters.stream().map(emitterMapper::emitterToEmitterDto).toList();
         return ResponseEntity.ok(emitterDtos);
@@ -59,7 +63,7 @@ public class EmitterController {
     @GetMapping("/facility-name")
     public ResponseEntity<List<EmitterDto>> emitterFacilityName(@RequestParam String name)
             throws ResponseStatusException {
-        List<Emitter> emitters = emitterRepository.findAllByFacilityName(name)
+        List<Emitter> emitters = emitterRepository.findAllByFacilityNameAndDataSet(name, dataSetService.findActiveDataSet())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         List<EmitterDto> emitterDtos = emitters.stream().map(emitterMapper::emitterToEmitterDto).toList();
         return ResponseEntity.ok(emitterDtos);

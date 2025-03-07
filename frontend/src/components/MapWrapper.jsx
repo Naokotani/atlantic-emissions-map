@@ -17,10 +17,15 @@ function MapWrapper() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `/api/v1/region/maritime?year=${filters.year}`
-        );
+        let apiUrl;
 
+        if (filters.year === "all") {
+          apiUrl = `/api/v1/region/maritime/all`;
+        } else {
+          apiUrl = `api/v1/region/maritime?years=${filters.year}`;
+        }
+
+        const response = await fetch(apiUrl);
         const data = await response.json();
         console.log(data);
 

@@ -6,7 +6,7 @@ import MapForm from "./MapForm";
 
 function MapWrapper() {
   const [filters, setFilters] = useState({
-    year: "2022", //Default most updated year
+    year: "all", //Default most updated year
     province: "all",
     emissionType: "all", // Default to all emissions
     emissionSource: "all",

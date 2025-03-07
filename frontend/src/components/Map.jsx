@@ -1,4 +1,7 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { divIcon } from "leaflet";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Pie } from "react-chartjs-2";
 
 function Map({ data }) {
   return (

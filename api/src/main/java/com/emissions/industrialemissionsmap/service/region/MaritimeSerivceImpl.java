@@ -15,8 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class MaritimeSerivceImpl implements MaritimeService {
@@ -41,7 +41,7 @@ public class MaritimeSerivceImpl implements MaritimeService {
                 .findAllByYearAndFacilityProvinceTerritoryAndDataSet(year, "Prince Edward Island", activeDataSet);
         List<Emitter> newBrunswickEmitters = emitterRepository
                 .findAllByYearAndFacilityProvinceTerritoryAndDataSet(year, "New Brunswick", activeDataSet);
-        return mapToAtlanticDto(novaScotiaEmitters, peiEmitters, newBrunswickEmitters);
+        return mapToDto(novaScotiaEmitters, peiEmitters, newBrunswickEmitters);
     }
 
     @Override
@@ -55,25 +55,25 @@ public class MaritimeSerivceImpl implements MaritimeService {
         }
     }
 
-    // TODO
     @Override
     public MaritimeDto getEmittersAllYearsSum() {
-        return null;
+        DataSet dataSet = dataSetService.findActiveDataSet();
+        List<Integer> years = dataSet.getYears().stream().toList();
+        return getSummedEmitters(years);
     }
 
     @Override
     public MaritimeDto getSummedEmitters(List<Integer> years) {
         DataSet activeDataSet = dataSetService.findActiveDataSet();
-        List<Object[]> nsAggregateEmitters = emitterRepository.sumYearsByFacilityProvinceTerritory(years,  "Nova Scotia", activeDataSet);
-        List<Object[]> peiAggregateEmitters = emitterRepository.sumYearsByFacilityProvinceTerritory(years,  "Prince Edward Island", activeDataSet);
-        List<Object[]> nbAggregateEmitters = emitterRepository.sumYearsByFacilityProvinceTerritory(years,  "New Brunswick", activeDataSet);
-        List<Emitter> nsEmitters = nsAggregateEmitters.stream().map(AggregateEmitterMapper::mapAggregateEmitterToEmitter).toList();
-        List<Emitter> peiEmitters = peiAggregateEmitters.stream().map(AggregateEmitterMapper::mapAggregateEmitterToEmitter).toList();
-        List<Emitter> nbEmitters = nbAggregateEmitters.stream().map(AggregateEmitterMapper::mapAggregateEmitterToEmitter).toList();
-        return mapToAtlanticDto(nsEmitters, peiEmitters, nbEmitters);
+        List<List<Object[]>> pronviceData = new ArrayList<>();
+        pronviceData.add(emitterRepository.sumYearsByFacilityProvinceTerritory(years,  "Nova Scotia", activeDataSet));
+        pronviceData.add(emitterRepository.sumYearsByFacilityProvinceTerritory(years,  "Prince Edward Island", activeDataSet));
+        pronviceData.add(emitterRepository.sumYearsByFacilityProvinceTerritory(years,  "New Brunswick", activeDataSet));
+        List<List<Emitter>> emitters = AggregateEmitterMapper.mapAggregateEmittersListToEmitters(pronviceData);
+        return mapToDto(emitters.get(0), emitters.get(1), emitters.get(2));
     }
 
-    private MaritimeDto mapToAtlanticDto(List<Emitter> novaScotiaEmitters,
+    private MaritimeDto mapToDto(List<Emitter> novaScotiaEmitters,
                                          List<Emitter> peiEmitters,
                                          List<Emitter> newBrunswickEmitters ) {
         List<EmitterDto> novaScotiaEmitterDto = emitterMapper.emittersToEmitterDtos(novaScotiaEmitters);

@@ -1,9 +1,13 @@
 package com.emissions.industrialemissionsmap.mapper;
 
 import com.emissions.industrialemissionsmap.model.Emitter;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 public class AggregateEmitterMapper {
-    public static Emitter mapAggregateEmitterToEmitter(Object[] aggregatedEmitter) {
+    private static Emitter mapAggregateEmitterToEmitter(Object[] aggregatedEmitter) {
         Emitter emitter = new Emitter();
         emitter.setFacilityName((String)aggregatedEmitter[0]);
         emitter.setFacilityDescriptionEnglish((String)aggregatedEmitter[1]);
@@ -30,5 +34,17 @@ public class AggregateEmitterMapper {
         emitter.setHfc236faCo2TonnesEquivalent((Double) aggregatedEmitter[22]);
         emitter.setHfc245caCo2TonnesEquivalent((Double) aggregatedEmitter[23]);
         return emitter;
+    }
+
+    private static List<Emitter> mapAggregateEmittersToEmitters(List<Object[]> aggregateEmitter) {
+        if(aggregateEmitter == null || aggregateEmitter.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Aggregate emitter list was empty.");
+        } else {
+            return aggregateEmitter.stream().map(AggregateEmitterMapper::mapAggregateEmitterToEmitter).toList();
+        }
+    }
+
+    public static List<List<Emitter>> mapAggregateEmittersListToEmitters(List<List<Object[]>> emitters) {
+        return emitters.stream().map(AggregateEmitterMapper::mapAggregateEmittersToEmitters).toList();
     }
 }

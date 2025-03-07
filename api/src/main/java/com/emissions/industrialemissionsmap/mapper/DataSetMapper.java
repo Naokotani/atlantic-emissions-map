@@ -14,6 +14,7 @@ import java.util.List;
 public interface DataSetMapper {
 
     @Mapping(target = "active", qualifiedByName = "dataSetActive", source = "dataSet")
+    @Mapping(target ="id", source="dataSetId")
     DataSetDto dataSetToDataSetDto(DataSet dataSet);
     List<DataSetDto> dataSetToDataSetDtoList(List<DataSet> dataSets);
 

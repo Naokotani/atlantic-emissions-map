@@ -8,6 +8,7 @@ import java.util.Set;
 
 @Data
 public class DataSetDto {
+    private int id;
     private int currentYear;
     private boolean active;
     private int records;

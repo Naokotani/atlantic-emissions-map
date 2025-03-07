@@ -1,6 +1,29 @@
+import { useState, useEffect } from "react";
+
 function MapForm({ filters, setFilters }) {
-  const CURRENT_DATA_YEAR = 2022;
-  const START_DATA_YEAR = 2004;
+  const [availableYears, setAvailableYears] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchYears = async () => {
+      try {
+        const response = await fetch(`/api/v1/data/active`);
+        const data = await response.json();
+
+        // Extract the years array from the response object
+        const yearsArray = data.years || [];
+        const sortedYears = yearsArray.sort((a, b) => b - a);
+
+        setAvailableYears(sortedYears);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching available years:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchYears();
+  }, []);
 
   const handleYearChange = (e) => {
     setFilters((prevFilters) => ({
@@ -31,15 +54,11 @@ function MapForm({ filters, setFilters }) {
   };
 
   const generateYearOptions = () => {
-    const years = [];
-    for (let year = CURRENT_DATA_YEAR; year >= START_DATA_YEAR; year--) {
-      years.push(
-        <option key={year} value={year.toString()}>
-          {year}
-        </option>
-      );
-    }
-    return years;
+    return availableYears.map((year) => (
+      <option key={year} value={year.toString()}>
+        {year}
+      </option>
+    ));
   };
 
   return (
@@ -47,9 +66,20 @@ function MapForm({ filters, setFilters }) {
       {/* Year filter */}
       <div className="filter-group">
         <label htmlFor="year">Year:</label>
-        <select id="year" value={filters.year} onChange={handleYearChange}>
+        <select
+          id="year"
+          value={filters.year}
+          onChange={handleYearChange}
+          disabled={loading}
+        >
           <option value="all">All</option>
-          {generateYearOptions()}
+          {loading ? (
+            <option value="" disabled>
+              Loading years...
+            </option>
+          ) : (
+            generateYearOptions()
+          )}
         </select>
       </div>
 

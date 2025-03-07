@@ -8,8 +8,12 @@ function Map({ data }) {
       style={{ height: "500px", width: "500px" }} // Base 500x500 map for now until future formatting.
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      {data.map((item) => (
-        <Marker key={item.id} position={[item.latitude, item.longitude]}>
+      {data.map((item, index) => (
+        <Marker
+          // Nasty unique key because multiple ids the same exist in the response -- lazy fix but it works
+          key={`${item.id}-${item.latitude}-${item.longitude}-${index}`}
+          position={[item.latitude, item.longitude]}
+        >
           <Popup>
             {/* Clean this up later */}
             <div>

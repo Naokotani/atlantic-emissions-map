@@ -1,12 +1,9 @@
 @import "./reset.css";
 @import "./hero.css";
 
-* {
-  /* background-color: #121212; */
-}
-
 #root {
-  max-width: 1280px;
+  width: 100%;
+  height: 100vh;
   margin: 0 auto;
   text-align: left;
   background-color: #121212;
@@ -17,7 +14,14 @@
 p,
 li,
 figcaption {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 28px;
+  font-weight: 400;
+  letter-spacing: 0.1px;
+  color: #dddddd;
   max-width: 65ch;
+  text-wrap: balance;
 }
 
 h1,

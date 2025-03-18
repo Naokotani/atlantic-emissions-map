@@ -39,7 +39,7 @@ The new CSS Reset - version 1.2.0 (last updated 23.7.2021)
   - Non-inherited properties to initial value
   Remove all the styles of the "User-Agent-Stylesheet", except for the 'display' property
 */
-*:where(:not(iframe, canvas, img, svg, video):not(svg *)) {
+*:where(:not(iframe, canvas, img, svg, video, sub, sup):not(svg *)) {
   all: unset;
   display: revert;
 }

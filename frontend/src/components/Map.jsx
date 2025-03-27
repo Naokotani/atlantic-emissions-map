@@ -25,8 +25,8 @@ const chartColors = [
 
 const createChartIcon = (emissions) => {
   const canvas = document.createElement("canvas");
-  canvas.width = 40;
-  canvas.height = 40;
+  canvas.width = 60;
+  canvas.height = 60;
 
   const chartData = {
     datasets: [
@@ -54,9 +54,9 @@ const createChartIcon = (emissions) => {
   return divIcon({
     className: "custom-div-icon",
     html: `<div style="background-image:url('${dataUrl}');
-           width:40px;height:40px;background-size:contain;"></div>`,
-    iconSize: [40, 40],
-    iconAnchor: [20, 20],
+           width:60px;height:60px;background-size:contain;"></div>`,
+    iconSize: [60, 60],
+    iconAnchor: [30, 30],
   });
 };
 
@@ -80,7 +80,7 @@ const createClusterIcon = (cluster) => {
   const chartIcon = createChartIcon(combinedEmissions);
 
   const count = cluster.getChildCount();
-  const size = Math.min(60, 40 + Math.log(count) * 10);
+  const size = Math.min(90, 60 + Math.log(count) * 15);
 
   return divIcon({
     html: `<div style="

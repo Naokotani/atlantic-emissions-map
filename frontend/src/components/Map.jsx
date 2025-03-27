@@ -9,6 +9,7 @@ import {
 } from "chart.js";
 import { useEffect, useState, useMemo } from "react";
 import MarkerClusterGroup from "react-leaflet-cluster";
+import "../styles/map.css";
 
 ChartJS.register(ArcElement, Tooltip, Legend, PieController);
 
@@ -144,60 +145,62 @@ function Map({ data }) {
   }, [validData]);
 
   return (
-    <MapContainer
-      center={[46, -64.0]}
-      zoom={6}
-      style={{ height: "500px", width: "500px" }}
-    >
-      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-
-      <MarkerClusterGroup
-        chunkedLoading
-        iconCreateFunction={createClusterIcon}
-        spiderfyOnMaxZoom={true}
-        showCoverageOnHover={false}
+    <div className="map-container">
+      <MapContainer
+        center={[46, -64.0]}
+        zoom={6}
+        // style={{ height: "500px", width: "500px" }}
       >
-        {validData.map((item, index) => {
-          const key = `${item.id}-${item.latitude}-${item.longitude}-${index}`;
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-          // Only render markers with icons
-          if (!markerIcons[key]) return null;
+        <MarkerClusterGroup
+          chunkedLoading
+          iconCreateFunction={createClusterIcon}
+          spiderfyOnMaxZoom={true}
+          showCoverageOnHover={false}
+        >
+          {validData.map((item, index) => {
+            const key = `${item.id}-${item.latitude}-${item.longitude}-${index}`;
 
-          // Extract emission values
-          const emissionsData = [
-            item.carbonDioxide,
-            item.methane,
-            item.nitrousOxide,
-            item.sulphurHexaflouride,
-            item.hydroflourocarbons,
-            item.perfluorocarbons,
-          ];
+            // Only render markers with icons
+            if (!markerIcons[key]) return null;
 
-          return (
-            <Marker
-              key={key}
-              position={[item.latitude, item.longitude]}
-              icon={markerIcons[key]}
-              // Store emissions data to use in cluster icons
-              emissionsData={emissionsData}
-            >
-              <Popup>
-                <div>
-                  <h3>{item.facilityName}</h3>
-                  <p>CO2: {item.carbonDioxide}</p>
-                  <p>CH4: {item.methane}</p>
-                  <p>N2O: {item.nitrousOxide}</p>
-                  <p>SF6: {item.sulphurHexaflouride}</p>
-                  <p>HFCs: {item.hydroflourocarbons}</p>
-                  <p>PFCs: {item.perfluorocarbons}</p>
-                  <p>Total Emissions: {item.totalEmissions}</p>
-                </div>
-              </Popup>
-            </Marker>
-          );
-        })}
-      </MarkerClusterGroup>
-    </MapContainer>
+            // Extract emission values
+            const emissionsData = [
+              item.carbonDioxide,
+              item.methane,
+              item.nitrousOxide,
+              item.sulphurHexaflouride,
+              item.hydroflourocarbons,
+              item.perfluorocarbons,
+            ];
+
+            return (
+              <Marker
+                key={key}
+                position={[item.latitude, item.longitude]}
+                icon={markerIcons[key]}
+                // Store emissions data to use in cluster icons
+                emissionsData={emissionsData}
+              >
+                <Popup>
+                  <div>
+                    <h3>{item.facilityName}</h3>
+                    <p>CO2: {item.carbonDioxide}</p>
+                    <p>CH4: {item.methane}</p>
+                    <p>N2O: {item.nitrousOxide}</p>
+                    <p>SF6: {item.sulphurHexaflouride}</p>
+                    <p>HFCs: {item.hydroflourocarbons}</p>
+                    <p>PFCs: {item.perfluorocarbons}</p>
+                    <p>Total Emissions: {item.totalEmissions}</p>
+                  </div>
+                </Popup>
+              </Marker>
+            );
+          })}
+        </MarkerClusterGroup>
+      </MapContainer>
+    </div>
   );
 }
 

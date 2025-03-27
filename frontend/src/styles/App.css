@@ -7,6 +7,7 @@
   margin: 0 auto;
   text-align: left;
   background-color: #121212;
+  overflow-x: hidden; /*Had to add this to fix horizontal scroll issue, unsure why leaflet was being dumb*/
 }
 
 /* ---------- Typography ---------- */

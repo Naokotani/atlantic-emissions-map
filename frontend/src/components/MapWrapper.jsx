@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-
 import Map from "./Map";
-
 import MapForm from "./MapForm";
+import "../styles/map.css";
 
 function MapWrapper() {
   const [filters, setFilters] = useState({
@@ -67,12 +66,10 @@ function MapWrapper() {
   ]); // Re-fetch when the filter changes
 
   return (
-    <>
+    <section className="map-section">
       <MapForm filters={filters} setFilters={setFilters} />
-      <div>
-        <Map data={mapData} />
-      </div>
-    </>
+      <Map data={mapData} />
+    </section>
   );
 }
 

@@ -8,6 +8,7 @@ import {
   PieController,
 } from "chart.js";
 import { useEffect, useState, useMemo } from "react";
+import MarkerClusterGroup from "react-leaflet-cluster";
 
 ChartJS.register(ArcElement, Tooltip, Legend, PieController);
 
@@ -55,6 +56,48 @@ const createChartIcon = (emissions) => {
            width:40px;height:40px;background-size:contain;"></div>`,
     iconSize: [40, 40],
     iconAnchor: [20, 20],
+  });
+};
+
+const createClusterIcon = (cluster) => {
+  const markers = cluster.getAllChildMarkers();
+
+  const combinedEmissions = [0, 0, 0, 0, 0, 0];
+
+  markers.forEach((marker) => {
+    const emissionsData = marker.options.emissionsData;
+    if (emissionsData) {
+      combinedEmissions[0] += emissionsData[0] || 0;
+      combinedEmissions[1] += emissionsData[1] || 0;
+      combinedEmissions[2] += emissionsData[2] || 0;
+      combinedEmissions[3] += emissionsData[3] || 0;
+      combinedEmissions[4] += emissionsData[4] || 0;
+      combinedEmissions[5] += emissionsData[5] || 0;
+    }
+  });
+
+  const chartIcon = createChartIcon(combinedEmissions);
+
+  const count = cluster.getChildCount();
+  const size = Math.min(60, 40 + Math.log(count) * 10);
+
+  return divIcon({
+    html: `<div style="
+      background-image:url('${
+        chartIcon.options.html.match(/url\('([^']+)'\)/)[1]
+      }');
+      width:${size}px;height:${size}px;
+      background-size:contain;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      font-weight:bold;
+      color:white;
+      text-shadow: 0px 0px 2px black;
+    ">${count}</div>`,
+    className: "custom-cluster-icon",
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
   });
 };
 
@@ -108,33 +151,52 @@ function Map({ data }) {
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-      {validData.map((item, index) => {
-        const key = `${item.id}-${item.latitude}-${item.longitude}-${index}`;
+      <MarkerClusterGroup
+        chunkedLoading
+        iconCreateFunction={createClusterIcon}
+        spiderfyOnMaxZoom={true}
+        showCoverageOnHover={false}
+      >
+        {validData.map((item, index) => {
+          const key = `${item.id}-${item.latitude}-${item.longitude}-${index}`;
 
-        // Only render markers with icons
-        if (!markerIcons[key]) return null;
+          // Only render markers with icons
+          if (!markerIcons[key]) return null;
 
-        return (
-          <Marker
-            key={key}
-            position={[item.latitude, item.longitude]}
-            icon={markerIcons[key]}
-          >
-            <Popup>
-              <div>
-                <h3>{item.facilityName}</h3>
-                <p>CO2: {item.carbonDioxide}</p>
-                <p>CH4: {item.methane}</p>
-                <p>N2O: {item.nitrousOxide}</p>
-                <p>SF6: {item.sulphurHexaflouride}</p>
-                <p>HFCs: {item.hydroflourocarbons}</p>
-                <p>PFCs: {item.perfluorocarbons}</p>
-                <p>Total Emissions: {item.totalEmissions}</p>
-              </div>
-            </Popup>
-          </Marker>
-        );
-      })}
+          // Extract emission values
+          const emissionsData = [
+            item.carbonDioxide,
+            item.methane,
+            item.nitrousOxide,
+            item.sulphurHexaflouride,
+            item.hydroflourocarbons,
+            item.perfluorocarbons,
+          ];
+
+          return (
+            <Marker
+              key={key}
+              position={[item.latitude, item.longitude]}
+              icon={markerIcons[key]}
+              // Store emissions data to use in cluster icons
+              emissionsData={emissionsData}
+            >
+              <Popup>
+                <div>
+                  <h3>{item.facilityName}</h3>
+                  <p>CO2: {item.carbonDioxide}</p>
+                  <p>CH4: {item.methane}</p>
+                  <p>N2O: {item.nitrousOxide}</p>
+                  <p>SF6: {item.sulphurHexaflouride}</p>
+                  <p>HFCs: {item.hydroflourocarbons}</p>
+                  <p>PFCs: {item.perfluorocarbons}</p>
+                  <p>Total Emissions: {item.totalEmissions}</p>
+                </div>
+              </Popup>
+            </Marker>
+          );
+        })}
+      </MarkerClusterGroup>
     </MapContainer>
   );
 }

@@ -1,0 +1,60 @@
+.map-legend {
+  margin-top: 30px;
+  padding: 15px 0;
+  border-top: 1px solid #444;
+}
+
+.map-legend h4 {
+  color: #dddddd;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.legend-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+}
+
+.color-box {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.legend-label {
+  color: #dddddd;
+  font-size: 14px;
+}
+
+.color-co2 {
+  background-color: #ff6384;
+}
+
+.color-ch4 {
+  background-color: #36a2eb;
+}
+
+.color-n2o {
+  background-color: #ffce56;
+}
+
+.color-sf6 {
+  background-color: #4bc0c0;
+}
+
+.color-hfc {
+  background-color: #9966ff;
+}
+
+.color-pfc {
+  background-color: #ff9f40;
+}

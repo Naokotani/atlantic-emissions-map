@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import MapLegend from "./MapLegend";
 
 function MapForm({ filters, setFilters }) {
   const [availableYears, setAvailableYears] = useState([]);
@@ -174,6 +175,7 @@ function MapForm({ filters, setFilters }) {
           <option value="Lead-Zinc Ore Mining">Lead-Zinc Ore Mining</option>
         </select>
       </div>
+      <MapLegend />
     </div>
   );
 }

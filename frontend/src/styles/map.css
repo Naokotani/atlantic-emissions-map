@@ -67,3 +67,147 @@
   width: 70%; /* Fixed width for selects in filter groups */
   margin-bottom: 0;
 }
+
+/* Popup */
+.leaflet-popup-content-wrapper {
+  background-color: #121212;
+  color: #dddddd;
+  border-radius: 6px;
+  box-shadow: 0 0 0 2px #8b7d3a; /* Dark gold border */
+  padding: 0;
+  overflow: hidden;
+  max-width: 300px;
+}
+
+.leaflet-popup-content {
+  margin: 0;
+  padding: 0;
+  width: 280px !important;
+}
+
+.leaflet-popup-tip {
+  background-color: #121212;
+  box-shadow: 0 0 0 2px #8b7d3a; /* Match the border color */
+}
+
+.popup-content {
+  padding: 12px;
+}
+
+/* Facility header */
+.facility-name {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  color: #ffffff;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.facility-location {
+  font-size: 13px;
+  color: #9e9e9e;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #333;
+}
+
+/* Facility Details Section */
+.facility-details {
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: #9e9e9e;
+}
+
+.detail-value {
+  text-align: right;
+  max-width: 60%;
+  word-break: break-word;
+}
+
+.loading-details,
+.error-details {
+  font-style: italic;
+  color: #888888;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 13px;
+}
+
+.error-details {
+  color: #c94b4b;
+}
+
+/* Emissions Section */
+.emissions-section {
+  font-size: 13px;
+  border-top: 1px solid #333;
+  padding-top: 10px;
+}
+
+.emissions-table {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 8px 0;
+}
+
+.emissions-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.emission-type {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.emission-value {
+  text-align: right;
+  font-family: monospace;
+  font-size: 13px;
+}
+
+.total-emissions {
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 8px;
+  color: #ffffff;
+}
+
+/* Close button styling */
+.leaflet-popup-close-button {
+  color: #8b7d3a !important;
+  opacity: 0.8;
+}
+
+.leaflet-popup-close-button:hover {
+  opacity: 1;
+}
+
+/* Animation for popup */
+.leaflet-popup {
+  animation: popup-fade 0.2s ease-out;
+}
+
+@keyframes popup-fade {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

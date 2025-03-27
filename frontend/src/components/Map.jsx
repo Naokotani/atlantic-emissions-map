@@ -102,7 +102,7 @@ const createClusterIcon = (cluster) => {
   });
 };
 
-function Map({ data }) {
+function Map({ data, facilityDetails, onPopupOpen }) {
   const [markerIcons, setMarkerIcons] = useState({});
 
   // Process data only when it changes
@@ -182,17 +182,123 @@ function Map({ data }) {
                 icon={markerIcons[key]}
                 // Store emissions data to use in cluster icons
                 emissionsData={emissionsData}
+                eventHandlers={{
+                  popupopen: () => onPopupOpen(item.id),
+                }}
               >
-                <Popup>
-                  <div>
-                    <h3>{item.facilityName}</h3>
-                    <p>CO2: {item.carbonDioxide}</p>
-                    <p>CH4: {item.methane}</p>
-                    <p>N2O: {item.nitrousOxide}</p>
-                    <p>SF6: {item.sulphurHexaflouride}</p>
-                    <p>HFCs: {item.hydroflourocarbons}</p>
-                    <p>PFCs: {item.perfluorocarbons}</p>
-                    <p>Total Emissions: {item.totalEmissions}</p>
+                <Popup className="custom-popup">
+                  <div className="popup-content">
+                    <h3 className="facility-name">{item.facilityName}</h3>
+                    <div className="facility-location">
+                      {item.city ? `${item.city}, ` : ""}
+                      {item.province || "Unknown location"}
+                    </div>
+
+                    <div className="facility-details">
+                      {facilityDetails[item.id] ? (
+                        facilityDetails[item.id].error ? (
+                          <div className="error-details">
+                            Error loading facility details.
+                          </div>
+                        ) : (
+                          <>
+                            <div className="detail-row">
+                              <span className="detail-label">
+                                Parent Company:
+                              </span>
+                              <span className="detail-value">
+                                {facilityDetails[item.id].parentCompany ||
+                                  "N/A"}
+                              </span>
+                            </div>
+                            <div className="detail-row">
+                              <span className="detail-label">Sector:</span>
+                              <span className="detail-value">
+                                {facilityDetails[item.id].industrySector ||
+                                  "N/A"}
+                              </span>
+                            </div>
+                            <div className="detail-row">
+                              <span className="detail-label">Phone:</span>
+                              <span className="detail-value">
+                                {facilityDetails[item.id].phone || "N/A"}
+                              </span>
+                            </div>
+                            <div className="detail-row">
+                              <span className="detail-label">Source:</span>
+                              <span className="detail-value">
+                                {facilityDetails[item.id].emissionSource ||
+                                  "N/A"}
+                              </span>
+                            </div>
+                          </>
+                        )
+                      ) : (
+                        <div className="loading-details">
+                          Loading facility details...
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="emissions-section">
+                      <div className="total-emissions">
+                        <strong>Total GHG:</strong>{" "}
+                        {Math.round(item.totalEmissions).toLocaleString() || 0}{" "}
+                        tonnes CO₂e
+                      </div>
+                      <div className="emissions-table">
+                        <div className="emissions-row">
+                          <span className="emission-type">CO₂:</span>
+                          <span className="emission-value">
+                            {Math.round(item.carbonDioxide).toLocaleString() ||
+                              0}{" "}
+                            tonnes
+                          </span>
+                        </div>
+                        <div className="emissions-row">
+                          <span className="emission-type">CH₄:</span>
+                          <span className="emission-value">
+                            {Math.round(item.methane).toLocaleString() || 0}{" "}
+                            tonnes
+                          </span>
+                        </div>
+                        <div className="emissions-row">
+                          <span className="emission-type">N₂O:</span>
+                          <span className="emission-value">
+                            {Math.round(item.nitrousOxide).toLocaleString() ||
+                              0}{" "}
+                            tonnes
+                          </span>
+                        </div>
+                        <div className="emissions-row">
+                          <span className="emission-type">SF₆:</span>
+                          <span className="emission-value">
+                            {Math.round(
+                              item.sulphurHexaflouride
+                            ).toLocaleString() || 0}{" "}
+                            tonnes tonnes
+                          </span>
+                        </div>
+                        <div className="emissions-row">
+                          <span className="emission-type">HFCs:</span>
+                          <span className="emission-value">
+                            {Math.round(
+                              item.hydroflourocarbons
+                            ).toLocaleString() || 0}{" "}
+                            tonnes tonnes
+                          </span>
+                        </div>
+                        <div className="emissions-row">
+                          <span className="emission-type">PFCs:</span>
+                          <span className="emission-value">
+                            {Math.round(
+                              item.perfluorocarbons
+                            ).toLocaleString() || 0}{" "}
+                            tonnes tonnes
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </Popup>
               </Marker>

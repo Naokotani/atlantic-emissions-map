@@ -67,8 +67,12 @@ function MapWrapper() {
 
   return (
     <section className="map-section">
-      <MapForm filters={filters} setFilters={setFilters} />
-      <Map data={mapData} />
+      <div className="map-filter-form">
+        <MapForm filters={filters} setFilters={setFilters} />
+      </div>
+      <div className="map-container">
+        <Map data={mapData} />
+      </div>
     </section>
   );
 }

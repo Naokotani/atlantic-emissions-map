@@ -145,7 +145,7 @@ function Map({ data }) {
   }, [validData]);
 
   return (
-    <div className="map-container">
+    <div>
       <MapContainer
         center={[46, -64.0]}
         zoom={6}

@@ -100,13 +100,13 @@ function MapForm({ filters, setFilters }) {
 
       {/* Emission type filter */}
       <div className="filter-group">
-        <label htmlFor="emissionType">Emission Type:</label>
+        <label htmlFor="emissionType">GHG:</label>
         <select
           id="emissionType"
           value={filters.emissionType}
           onChange={handleEmissionChange}
         >
-          <option value="all">All Emissions</option>
+          <option value="all">All</option>
           <option value="carbonDioxide">C02</option>
           <option value="methane">CH4</option>
           <option value="nitrousOxide">N20</option>
@@ -125,7 +125,7 @@ function MapForm({ filters, setFilters }) {
           value={filters.emissionSource}
           onChange={handleSourceChange}
         >
-          <option value="all">All Sources</option>
+          <option value="all">All</option>
           <option value="Cement Manufacturing">Cement Manufacturing</option>
           <option value="Fossil-Fuel Electric Power Generation">
             Fossil Fuel Power Generation

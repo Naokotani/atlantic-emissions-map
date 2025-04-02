@@ -1,50 +1,34 @@
 package com.emissions.industrialemissionsmap.mapper;
 
-import com.emissions.industrialemissionsmap.model.Emitter;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
+import com.emissions.industrialemissionsmap.dto.AggregateEmitter;
 
 public class AggregateEmitterMapper {
-    private static Emitter mapAggregateEmitterToEmitter(Object[] aggregatedEmitter) {
-        Emitter emitter = new Emitter();
-        emitter.setFacilityName((String)aggregatedEmitter[0]);
-        emitter.setFacilityDescriptionEnglish((String)aggregatedEmitter[1]);
-        emitter.setReportingCompanyBusinessNumber((Integer) aggregatedEmitter[2]);
-        emitter.setFacilityProvinceTerritory((String) aggregatedEmitter[3]);
-        emitter.setLatitude((Double) aggregatedEmitter[4]);
-        emitter.setLongitude((Double) aggregatedEmitter[5]);
-        emitter.setTotalEmissionsTonnes((Double) aggregatedEmitter[6]);
-        emitter.setCo2Tonnes((Double) aggregatedEmitter[7]);
-        emitter.setCh4Co2TonnesEquivalent((Double) aggregatedEmitter[8]);
-        emitter.setN2oCo2TonnesEquivalent((Double) aggregatedEmitter[9]);
-        emitter.setSf6Co2TonnesEquivalent((Double) aggregatedEmitter[10]);
-        emitter.setPfcTotalCo2Tonnes((Double) aggregatedEmitter[11]);
-        emitter.setHfc32Co2TonnesEquivalent((Double) aggregatedEmitter[12]);
-        emitter.setHfc41Co2TonnesEquivalent((Double) aggregatedEmitter[13]);
-        emitter.setHfc4310meeCo2TonnesEquivalent((Double) aggregatedEmitter[14]);
-        emitter.setHfc125Co2TonnesEquivalent((Double) aggregatedEmitter[15]);
-        emitter.setHfc134aCo2TonnesEquivalent((Double) aggregatedEmitter[16]);
-        emitter.setHfc134aCo2TonnesEquivalent((Double) aggregatedEmitter[17]);
-        emitter.setHfc143Co2TonnesEquivalent((Double) aggregatedEmitter[18]);
-        emitter.setHfc143aCo2TonnesEquivalent((Double) aggregatedEmitter[19]);
-        emitter.setHfc152aCo2TonnesEquivalent((Double) aggregatedEmitter[20]);
-        emitter.setHfc227eaCo2TonnesEquivalent((Double) aggregatedEmitter[21]);
-        emitter.setHfc236faCo2TonnesEquivalent((Double) aggregatedEmitter[22]);
-        emitter.setHfc245caCo2TonnesEquivalent((Double) aggregatedEmitter[23]);
+    public static AggregateEmitter mapObjectToAggregateEmitter(Object[] aggregatedEmitter) {
+        AggregateEmitter emitter = new AggregateEmitter();
+        emitter.setGhgrpId((String)aggregatedEmitter[0]);
+        emitter.setTotalEmissionsTonnes((Double) aggregatedEmitter[1]);
+        emitter.setCarbonDioxide((Double) aggregatedEmitter[2]);
+        emitter.setMethane((Double) aggregatedEmitter[3]);
+        emitter.setNitrousOxide((Double) aggregatedEmitter[4]);
+        emitter.setSulphurHexaFlouride((Double) aggregatedEmitter[5]);
+        emitter.setPerflourocarbons((Double) aggregatedEmitter[6]);
+
+        double hydroflourocarbons = 0.0;
+        hydroflourocarbons += (Double) aggregatedEmitter[7];
+        hydroflourocarbons += (Double) aggregatedEmitter[8];
+        hydroflourocarbons += (Double) aggregatedEmitter[9];
+        hydroflourocarbons += (Double) aggregatedEmitter[10];
+        hydroflourocarbons += (Double) aggregatedEmitter[11];
+        hydroflourocarbons += (Double) aggregatedEmitter[12];
+        hydroflourocarbons += (Double) aggregatedEmitter[13];
+        hydroflourocarbons += (Double) aggregatedEmitter[14];
+        hydroflourocarbons += (Double) aggregatedEmitter[15];
+        hydroflourocarbons += (Double) aggregatedEmitter[16];
+        hydroflourocarbons += (Double) aggregatedEmitter[17];
+        hydroflourocarbons += (Double) aggregatedEmitter[18];
+
+        emitter.setHydroflourocarbons(hydroflourocarbons);
+
         return emitter;
-    }
-
-    private static List<Emitter> mapAggregateEmittersToEmitters(List<Object[]> aggregateEmitter) {
-        if(aggregateEmitter == null || aggregateEmitter.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Aggregate emitter list was empty.");
-        } else {
-            return aggregateEmitter.stream().map(AggregateEmitterMapper::mapAggregateEmitterToEmitter).toList();
-        }
-    }
-
-    public static List<List<Emitter>> mapAggregateEmittersListToEmitters(List<List<Object[]>> emitters) {
-        return emitters.stream().map(AggregateEmitterMapper::mapAggregateEmittersToEmitters).toList();
     }
 }

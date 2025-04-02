@@ -5,7 +5,7 @@ import java.util.List;
 
 @Data
 public class MaritimeDto {
-    private List<EmitterDto> novaScotia;
-    private List<EmitterDto> newBrunswick;
-    private List<EmitterDto> pei;
+    private List<AggregateEmitter> novaScotia;
+    private List<AggregateEmitter> newBrunswick;
+    private List<AggregateEmitter> pei;
 }

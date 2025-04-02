@@ -1,31 +1,7 @@
 import { useState, useEffect } from "react";
 import MapLegend from "./MapLegend";
 
-function MapForm({ filters, setFilters }) {
-  const [availableYears, setAvailableYears] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchYears = async () => {
-      try {
-        const response = await fetch(`/api/v1/data/active`);
-        const data = await response.json();
-
-        // Extract the years array from the response object
-        const yearsArray = data.years || [];
-        const sortedYears = yearsArray.sort((a, b) => b - a);
-
-        setAvailableYears(sortedYears);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching available years:", error);
-        setLoading(false);
-      }
-    };
-
-    fetchYears();
-  }, []);
-
+function MapForm({ filters, setFilters, availableYears, loading }) {
   const handleYearChange = (e) => {
     setFilters((prevFilters) => ({
       ...prevFilters,

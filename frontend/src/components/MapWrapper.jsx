@@ -13,18 +13,38 @@ function MapWrapper() {
 
   const [mapData, setMapData] = useState([]); // Store fetched data
   const [facilityDetails, setFacilityDetails] = useState({});
+  const [availableYears, setAvailableYears] = useState([]);
+  const [loading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchYears = async () => {
+      try {
+        const response = await fetch("/api/v1/data/active");
+        const data = await response.json();
+        const yearsArray = data.years || [];
+        const sortedYears = yearsArray.sort((a, b) => b - a);
+        setAvailableYears(sortedYears);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching available years:", error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchYears();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let apiUrl;
-
+        let yearsParam;
         if (filters.year === "all") {
-          apiUrl = `/api/v1/region/maritime/all`;
+          yearsParam = availableYears.join(",");
         } else {
-          apiUrl = `api/v1/region/maritime?years=${filters.year}`;
+          yearsParam = filters.year;
         }
 
+        const apiUrl = `/api/v1/region/maritime?years=${yearsParam}`;
         const response = await fetch(apiUrl);
         const data = await response.json();
         console.log(data);
@@ -58,13 +78,10 @@ function MapWrapper() {
       }
     };
 
-    fetchData();
-  }, [
-    filters.year,
-    filters.province,
-    filters.emissionType,
-    filters.emissionSource,
-  ]); // Re-fetch when the filter changes
+    if (availableYears.length > 0) {
+      fetchData();
+    }
+  }, [filters, availableYears]); // Re-fetch when the filter changes
 
   // Func to fetch facility details
   const fetchFacilityDetails = async (facilityId) => {
@@ -102,7 +119,12 @@ function MapWrapper() {
   return (
     <section className="map-section">
       <div className="map-filter-form">
-        <MapForm filters={filters} setFilters={setFilters} />
+        <MapForm
+          filters={filters}
+          setFilters={setFilters}
+          availableYears={availableYears}
+          loading={loading}
+        />
       </div>
       <div className="map-container">
         <Map

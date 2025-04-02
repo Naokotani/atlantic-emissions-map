@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import MapLegend from "./MapLegend";
 
 function MapForm({ filters, setFilters, availableYears, loading }) {

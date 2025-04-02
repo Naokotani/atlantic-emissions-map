@@ -5,9 +5,9 @@ import "../styles/map.css";
 
 function MapWrapper() {
   const [filters, setFilters] = useState({
-    year: "all", //Default most updated year
+    year: "all",
     province: "all",
-    emissionType: "all", // Default to all emissions
+    emissionType: "all",
     emissionSource: "all",
   });
 
@@ -16,6 +16,7 @@ function MapWrapper() {
   const [availableYears, setAvailableYears] = useState([]);
   const [loading, setIsLoading] = useState(true);
 
+  // Get all available years
   useEffect(() => {
     const fetchYears = async () => {
       try {

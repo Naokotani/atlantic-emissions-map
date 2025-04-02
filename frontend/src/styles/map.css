@@ -118,8 +118,8 @@
 }
 
 .detail-row {
-  display: flex;
-  justify-content: space-between;
+  font-size: 13px;
+  color: #dddddd;
   margin-bottom: 6px;
 }
 
@@ -129,9 +129,9 @@
 }
 
 .detail-value {
-  text-align: right;
-  max-width: 60%;
+  width: 100%;
   word-break: break-word;
+  line-height: 1.4;
 }
 
 .loading-details,
@@ -184,6 +184,9 @@
   font-weight: 500;
   margin-top: 8px;
   color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* Close button styling */

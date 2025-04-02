@@ -120,7 +120,7 @@ function Map({ data, facilityDetails, onPopupOpen }) {
     const icons = {};
 
     validData.forEach((item, index) => {
-      const key = `${item.id}-${item.latitude}-${item.longitude}-${index}`;
+      const key = `${item.ghgrpId}-${item.latitude}-${item.longitude}-${index}`;
 
       // Extract emission values for pie chart data
       const emissions = [
@@ -144,6 +144,18 @@ function Map({ data, facilityDetails, onPopupOpen }) {
     return () => setMarkerIcons({});
   }, [validData]);
 
+  // Formatting for phone number
+  const formatPhoneNumber = (phoneNumber) => {
+    const cleaned = ("" + phoneNumber).replace(/\D/g, "");
+    const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+
+    if (match) {
+      return `${match[1]}-${match[2]}-${match[3]}`;
+    }
+
+    return phoneNumber || "Phone Number N/A";
+  };
+
   return (
     <div>
       <MapContainer
@@ -160,7 +172,7 @@ function Map({ data, facilityDetails, onPopupOpen }) {
           showCoverageOnHover={false}
         >
           {validData.map((item, index) => {
-            const key = `${item.id}-${item.latitude}-${item.longitude}-${index}`;
+            const key = `${item.ghgrpId}-${item.latitude}-${item.longitude}-${index}`;
 
             // Only render markers with icons
             if (!markerIcons[key]) return null;
@@ -183,52 +195,59 @@ function Map({ data, facilityDetails, onPopupOpen }) {
                 // Store emissions data to use in cluster icons
                 emissionsData={emissionsData}
                 eventHandlers={{
-                  popupopen: () => onPopupOpen(item.id),
+                  popupopen: () => onPopupOpen(item.ghgrpId),
                 }}
               >
                 <Popup className="custom-popup">
                   <div className="popup-content">
-                    <h3 className="facility-name">{item.facilityName}</h3>
+                    <h3 className="facility-name">
+                      {facilityDetails[item.ghgrpId]?.facilityName ||
+                        item.facilityName}
+                    </h3>
+
                     <div className="facility-location">
-                      {item.city ? `${item.city}, ` : ""}
-                      {item.province || "Unknown location"}
+                      {facilityDetails[item.ghgrpId] ? (
+                        <>
+                          {facilityDetails[item.ghgrpId].facilityCityOrDistrict}
+                          ,&nbsp;
+                          {
+                            facilityDetails[item.ghgrpId]
+                              .facilityProvinceTerritory
+                          }
+                        </>
+                      ) : (
+                        `${item.city || ""}, ${
+                          item.province || "Unknown location"
+                        }`
+                      )}
                     </div>
 
                     <div className="facility-details">
-                      {facilityDetails[item.id] ? (
-                        facilityDetails[item.id].error ? (
+                      {facilityDetails[item.ghgrpId] ? (
+                        facilityDetails[item.ghgrpId].error ? (
                           <div className="error-details">
                             Error loading facility details.
                           </div>
                         ) : (
                           <>
                             <div className="detail-row">
-                              <span className="detail-label">
-                                Parent Company:
-                              </span>
                               <span className="detail-value">
-                                {facilityDetails[item.id].parentCompany ||
-                                  "N/A"}
+                                {facilityDetails[item.ghgrpId]
+                                  .companyLegalName || "Parent Company N/A"}
                               </span>
                             </div>
                             <div className="detail-row">
-                              <span className="detail-label">Sector:</span>
                               <span className="detail-value">
-                                {facilityDetails[item.id].industrySector ||
-                                  "N/A"}
+                                {facilityDetails[item.ghgrpId]
+                                  .facilityDescription || "Industry Sector N/A"}
                               </span>
                             </div>
                             <div className="detail-row">
-                              <span className="detail-label">Phone:</span>
                               <span className="detail-value">
-                                {facilityDetails[item.id].phone || "N/A"}
-                              </span>
-                            </div>
-                            <div className="detail-row">
-                              <span className="detail-label">Source:</span>
-                              <span className="detail-value">
-                                {facilityDetails[item.id].emissionSource ||
-                                  "N/A"}
+                                {formatPhoneNumber(
+                                  facilityDetails[item.ghgrpId]
+                                    .publicContactTelephone
+                                )}
                               </span>
                             </div>
                           </>
@@ -242,61 +261,42 @@ function Map({ data, facilityDetails, onPopupOpen }) {
 
                     <div className="emissions-section">
                       <div className="total-emissions">
-                        <strong>Total GHG:</strong>{" "}
-                        {Math.round(item.totalEmissions).toLocaleString() || 0}{" "}
-                        tonnes CO₂e
+                        <strong>Total GHG:</strong>
+                        {[
+                          item.carbonDioxide,
+                          item.methane,
+                          item.nitrousOxide,
+                          item.sulphurHexaflouride,
+                          item.hydroflourocarbons,
+                          item.perfluorocarbons,
+                        ]
+                          .filter(
+                            (val) =>
+                              val !== null && val !== undefined && !isNaN(val)
+                          )
+                          .reduce((sum, val) => sum + Number(val), 0)
+                          .toFixed(0)
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                        tonnes
                       </div>
                       <div className="emissions-table">
-                        <div className="emissions-row">
-                          <span className="emission-type">CO₂:</span>
-                          <span className="emission-value">
-                            {Math.round(item.carbonDioxide).toLocaleString() ||
-                              0}{" "}
-                            tonnes
-                          </span>
-                        </div>
-                        <div className="emissions-row">
-                          <span className="emission-type">CH₄:</span>
-                          <span className="emission-value">
-                            {Math.round(item.methane).toLocaleString() || 0}{" "}
-                            tonnes
-                          </span>
-                        </div>
-                        <div className="emissions-row">
-                          <span className="emission-type">N₂O:</span>
-                          <span className="emission-value">
-                            {Math.round(item.nitrousOxide).toLocaleString() ||
-                              0}{" "}
-                            tonnes
-                          </span>
-                        </div>
-                        <div className="emissions-row">
-                          <span className="emission-type">SF₆:</span>
-                          <span className="emission-value">
-                            {Math.round(
-                              item.sulphurHexaflouride
-                            ).toLocaleString() || 0}{" "}
-                            tonnes tonnes
-                          </span>
-                        </div>
-                        <div className="emissions-row">
-                          <span className="emission-type">HFCs:</span>
-                          <span className="emission-value">
-                            {Math.round(
-                              item.hydroflourocarbons
-                            ).toLocaleString() || 0}{" "}
-                            tonnes tonnes
-                          </span>
-                        </div>
-                        <div className="emissions-row">
-                          <span className="emission-type">PFCs:</span>
-                          <span className="emission-value">
-                            {Math.round(
-                              item.perfluorocarbons
-                            ).toLocaleString() || 0}{" "}
-                            tonnes tonnes
-                          </span>
-                        </div>
+                        {[
+                          { label: "CO₂", value: item.carbonDioxide },
+                          { label: "CH₄", value: item.methane },
+                          { label: "N₂O", value: item.nitrousOxide },
+                          { label: "SF₆", value: item.sulphurHexaflouride },
+                          { label: "HFCs", value: item.hydroflourocarbons },
+                          { label: "PFCs", value: item.perfluorocarbons },
+                        ].map(({ label, value }) => (
+                          <div className="emissions-row" key={label}>
+                            <span className="emission-type">{label}:</span>
+                            <span className="emission-value">
+                              {value !== null && value !== undefined
+                                ? `${Math.round(value).toLocaleString()} tonnes`
+                                : "0 tonnes"}
+                            </span>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>

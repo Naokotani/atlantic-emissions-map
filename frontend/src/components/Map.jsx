@@ -15,12 +15,12 @@ ChartJS.register(ArcElement, Tooltip, Legend, PieController);
 
 // Chart colors
 const chartColors = [
-  "#FF6384", // CO2
-  "#36A2EB", // CH4
-  "#FFCE56", // N2O
-  "#4BC0C0", // SF6
-  "#9966FF", // HFCs
-  "#FF9F40", // PFCs
+  "#4A8C7B", // CO2 - muted teal
+  "#5B6CC2", // CH4 - deep blue
+  "#8C566C", // N2O - muted purple-red
+  "#737C80", // SF6 - steel gray
+  "#93A661", // HFCs - sage green
+  "#C17B57", // PFCs - terracotta
 ];
 
 const createChartIcon = (emissions) => {
@@ -163,7 +163,10 @@ function Map({ data, facilityDetails, onPopupOpen }) {
         zoom={6}
         // style={{ height: "500px", width: "500px" }}
       >
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <TileLayer
+          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+          attribution='&copy; <a href="https://carto.com/">Carto</a>'
+        />
 
         <MarkerClusterGroup
           chunkedLoading

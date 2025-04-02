@@ -36,25 +36,25 @@
 }
 
 .color-co2 {
-  background-color: #ff6384;
+  background-color: #4a8c7b; /* muted teal */
 }
 
 .color-ch4 {
-  background-color: #36a2eb;
+  background-color: #5b6cc2; /* deep blue */
 }
 
 .color-n2o {
-  background-color: #ffce56;
+  background-color: #8c566c; /* muted purple-red */
 }
 
 .color-sf6 {
-  background-color: #4bc0c0;
+  background-color: #737c80; /* steel gray */
 }
 
 .color-hfc {
-  background-color: #9966ff;
+  background-color: #93a661; /* sage green */
 }
 
 .color-pfc {
-  background-color: #ff9f40;
+  background-color: #c17b57; /* terracotta */
 }

@@ -1,6 +1,5 @@
 package com.emissions.industrialemissionsmap.repository;
 
-import com.emissions.industrialemissionsmap.model.AggregateEmitter;
 import com.emissions.industrialemissionsmap.model.DataSet;
 import com.emissions.industrialemissionsmap.model.Emitter;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,12 +10,7 @@ import java.util.Optional;
 
 public interface EmitterRepository extends JpaRepository<Emitter, Integer> {
     List<Emitter> findAllByYearAndFacilityProvinceTerritoryAndDataSet(int year, String facilityProvinceTerritory, DataSet activeDataSet);
-    @Query("SELECT e.facilityName, " +
-            "e.facilityDescriptionEnglish, " +
-            "e.reportingCompanyBusinessNumber, " +
-            "e.facilityProvinceTerritory, " +
-            "e.latitude, " +
-            "e.longitude, " +
+    @Query("SELECT e.ghgrpId, " +
             "SUM(e.totalEmissionsTonnes), " +
             "SUM(e.co2Tonnes), " +
             "SUM(e.ch4Co2TonnesEquivalent), " +
@@ -38,9 +32,10 @@ public interface EmitterRepository extends JpaRepository<Emitter, Integer> {
             "FROM Emitter e " +
             "WHERE e.year IN :years AND e.dataSet = :activeDataSet " +
             "AND e.facilityProvinceTerritory = :facilityProvinceTerritory " +
-            "GROUP BY e.facilityName, e.facilityProvinceTerritory, e.facilityDescriptionEnglish, e.longitude, e.latitude, e.reportingCompanyBusinessNumber")
+            "GROUP BY e.ghgrpId")
     List<Object[]> sumYearsByFacilityProvinceTerritory(List<Integer> years, String facilityProvinceTerritory, DataSet activeDataSet);
     Optional<Emitter> findEmitterByFacilityNameAndYearAndDataSet(String name, int year, DataSet activeDataset);
     Optional<List<Emitter>> findEmittersByReportingCompanyBusinessNumberAndDataSet(int businessNumber, DataSet activeDataset);
     Optional<List<Emitter>> findAllByFacilityNameAndDataSet(String facilityName, DataSet activeataset);
+    Optional<List<Emitter>> findEmitterByGhgrpIdAndDataSet(String ghgrpId, DataSet activeDataSet);
 }

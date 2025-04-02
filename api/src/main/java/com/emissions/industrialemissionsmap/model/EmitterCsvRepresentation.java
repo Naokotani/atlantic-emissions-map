@@ -1,6 +1,7 @@
 package com.emissions.industrialemissionsmap.model;
 
 import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvBindByPosition;
 import lombok.*;
 
 
@@ -9,6 +10,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmitterCsvRepresentation {
+    @CsvBindByName(column = "GHGRP ID No. / No d'identification du PDGES")
+    private String ghgrpId;
     @CsvBindByName(column = "Reference Year / Année de référence")
     private int year;
     @CsvBindByName(column = "Facility Name / Nom de l'installation")

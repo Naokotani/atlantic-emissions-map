@@ -19,6 +19,7 @@ public class Emitter {
     @ManyToOne
     @NotNull
     DataSet dataSet;
+    private String ghgrpId;
     private int year;
     private String facilityName;
     private String facilityLocation;

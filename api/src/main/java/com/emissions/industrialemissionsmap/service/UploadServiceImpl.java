@@ -6,17 +6,16 @@ import com.emissions.industrialemissionsmap.model.Emitter;
 import com.emissions.industrialemissionsmap.model.EmitterCsvRepresentation;
 import com.emissions.industrialemissionsmap.repository.DataSetRepository;
 import com.emissions.industrialemissionsmap.repository.EmitterRepository;
+import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
 import jakarta.transaction.Transactional;
+import org.apache.commons.io.input.BOMInputStream;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -64,7 +63,8 @@ public class UploadServiceImpl implements UploadService {
     }
 
     private Set<Emitter> parseCsv(MultipartFile file) throws IOException {
-        try(Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
+        InputStream inputStream = file.getInputStream();
+        try(Reader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             HeaderColumnNameMappingStrategy<EmitterCsvRepresentation> strategy =
                     new HeaderColumnNameMappingStrategy<>();
             strategy.setType(EmitterCsvRepresentation.class);
@@ -74,7 +74,8 @@ public class UploadServiceImpl implements UploadService {
                             .withIgnoreEmptyLine(true)
                             .withIgnoreLeadingWhiteSpace(true)
                             .build();
-            return emitterCsvToEntity.csvToEntity(csvToBean.parse());
+            List<EmitterCsvRepresentation> emitterCsvRepresentation = csvToBean.parse();
+            return emitterCsvToEntity.csvToEntity(emitterCsvRepresentation);
         }
     }
-}
+    }

@@ -6,7 +6,5 @@ import com.emissions.industrialemissionsmap.dto.MaritimeDto;
 import java.util.List;
 
 public interface MaritimeService {
-    MaritimeDto getEmitters(List<Integer> year);
-    MaritimeDto getEmittersAllYearsSum();
-    MaritimeDto getSummedEmitters(List<Integer> years);
+    MaritimeDto getEmitters(List<Integer> years);
 }

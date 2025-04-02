@@ -11,6 +11,7 @@ import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface EmitterMapper {
+    @Mapping(target="ghgrpId", source="ghgrpId")
     @Mapping(target = "facilityDescription", source = "facilityDescriptionEnglish")
     @Mapping(target = "businessNumber", source = "reportingCompanyBusinessNumber")
     @Mapping(target = "totalEmissions", source = "totalEmissionsTonnes")

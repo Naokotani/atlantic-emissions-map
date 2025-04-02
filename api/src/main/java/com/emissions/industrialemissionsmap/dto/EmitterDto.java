@@ -4,6 +4,8 @@ import lombok.Data;
 
 @Data
 public class EmitterDto {
+    private int id;
+    private String ghgrpId;
     private String facilityName;
     private String facilityDescription;
     private int businessNumber;

@@ -23,6 +23,7 @@ const chartColors = [
   "#C17B57", // PFCs - terracotta
 ];
 
+// From Map.jsx
 const createChartIcon = (emissions) => {
   const canvas = document.createElement("canvas");
   canvas.width = 60;
@@ -190,6 +191,7 @@ function Map({ data, facilityDetails, onPopupOpen }) {
               item.perfluorocarbons,
             ];
 
+            // From Map.jsx
             return (
               <Marker
                 key={key}

@@ -1,5 +1,6 @@
 import MapLegend from "./MapLegend";
 
+// From MapForm.jsx
 function MapForm({ filters, setFilters, availableYears, loading }) {
   const handleYearChange = (e) => {
     setFilters((prevFilters) => ({

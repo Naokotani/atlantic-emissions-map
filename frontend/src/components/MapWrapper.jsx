@@ -68,9 +68,16 @@ function MapWrapper() {
 
         // Then filter by source
         if (filters.emissionSource !== "all") {
-          filteredData = filteredData.filter(
-            (item) => item.facilityDescription === filters.emissionSource
-          );
+          filteredData = filteredData.filter((item) => {
+            const details = facilityDetails[item.ghgrpId];
+
+            if (!details) {
+              fetchFacilityDetails(item.ghgrpId);
+              return true;
+            }
+
+            return details.facilityDescription === filters.emissionSource;
+          });
         }
 
         setMapData(filteredData); // Set data to be used in map

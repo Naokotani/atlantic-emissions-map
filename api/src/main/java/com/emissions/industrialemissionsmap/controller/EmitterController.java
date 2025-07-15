@@ -27,17 +27,6 @@ public class EmitterController {
         this.dataSetService = dataSetService;
     }
 
-    @Operation(summary = "Get a single emitter by name and year")
-    @GetMapping("/name")
-    public ResponseEntity<EmitterDto> emitterByNameAndYear(@RequestParam int year, @RequestParam String name)
-    throws ResponseStatusException {
-        Emitter emitter =  emitterRepository.findEmitterByFacilityNameAndYearAndDataSet(name, year,
-                        dataSetService.findActiveDataSet())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        EmitterDto emitterDto = emitterMapper.emitterToEmitterDto(emitter);
-        return ResponseEntity.ok(emitterDto);
-    }
-
     @Operation(summary = "Get a single emitter by id")
     @GetMapping("/id")
     public ResponseEntity<EmitterDto> emitterByIdAndYear(@RequestParam int id)
@@ -58,9 +47,20 @@ public class EmitterController {
         return ResponseEntity.ok(emitterDtos);
     }
 
+    @Operation(summary = "Get a single emitter by name and year")
+    @GetMapping("/name")
+    public ResponseEntity<EmitterDto> emitterByNameAndYear(@RequestParam int year, @RequestParam String name)
+            throws ResponseStatusException {
+        Emitter emitter =  emitterRepository.findEmitterByFacilityNameAndYearAndDataSet(name, year,
+                        dataSetService.findActiveDataSet())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        EmitterDto emitterDto = emitterMapper.emitterToEmitterDto(emitter);
+        return ResponseEntity.ok(emitterDto);
+    }
+
     @Operation(summary = "Get all years by facility name")
     @GetMapping("/facility-name")
-    public ResponseEntity<List<EmitterDto>> emitterFacilityName(@RequestParam String name)
+    public ResponseEntity<List<EmitterDto>> emitterAllYearsByFacilityName(@RequestParam String name)
             throws ResponseStatusException {
         List<Emitter> emitters = emitterRepository.findAllByFacilityNameAndDataSet(name, dataSetService.findActiveDataSet())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

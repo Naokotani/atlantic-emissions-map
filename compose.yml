@@ -32,6 +32,8 @@ services:
     # Set this so spring can find the db as it differs from on localhost.
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: sosecret
     networks:
       - backend
   client-nginx:

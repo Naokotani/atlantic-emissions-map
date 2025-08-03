@@ -4,6 +4,7 @@ import com.emissions.industrialemissionsmap.dto.DataSetDto;
 import com.emissions.industrialemissionsmap.mapper.DataSetMapper;
 import com.emissions.industrialemissionsmap.model.DataSet;
 import com.emissions.industrialemissionsmap.repository.DataSetRepository;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -36,6 +37,7 @@ public class DataSetServiceImpl implements DataSetService {
     }
 
     @Override
+    @CacheEvict(value = "maritime", allEntries = true)
     public DataSetDto setActiveDataSet(long id) throws ResponseStatusException {
         DataSet newActiveDataSet = dataSetRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         List<DataSet> dataSets = dataSetRepository.findAll();

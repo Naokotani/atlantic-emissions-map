@@ -1,0 +1,54 @@
+services:
+  # Creates the database service.
+  db:
+    # The image being used. Currently the "lastest" postgres image.
+    image: postgres
+    # Restart on error unless manually stopped.
+    restart: unless-stopped
+    environment:
+      # Sets the password for the database user.
+      POSTGRES_PASSWORD: secret
+    #Exposes port 5432 to the host.
+    ports:
+      - 5432:5432
+    # Use the backend container network.
+    networks:
+      - backend
+    # Create persistent data by saving to a docker volume.
+    volumes:
+      - ghg-data:/var/lib/postgresql/data
+  # For building the api service image
+  build-api:
+    # names the service.
+    image: spring-api
+    # Where the source code and Dockerfile live.
+    depends_on: 
+      - db
+    build:
+      context: ./api/
+      dockerfile: ./Dockerfile
+    ports: 
+      - 8080:8080
+    # Set this so spring can find the db as it differs from on localhost.
+    environment:
+      - SPRING_DATASOURCE_URL
+      - ADMIN_USERNAME
+      - ADMIN_PASSWORD
+    networks:
+      - backend
+  client-nginx:
+    image: client-nginx
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile.prod
+    networks:
+      - backend
+    ports:
+      - 8081:80
+volumes:
+  ghg-data:
+# Creates the network. Can later create a frontend network to seperate
+# the frontend and backend.
+networks:
+  backend:
+  frontend:

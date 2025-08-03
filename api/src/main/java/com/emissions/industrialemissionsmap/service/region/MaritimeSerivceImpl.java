@@ -9,6 +9,7 @@ import com.emissions.industrialemissionsmap.model.DataSet;
 import com.emissions.industrialemissionsmap.model.Emitter;
 import com.emissions.industrialemissionsmap.repository.EmitterRepository;
 import com.emissions.industrialemissionsmap.service.DataSetService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,18 +18,17 @@ import java.util.List;
 public class MaritimeSerivceImpl implements MaritimeService {
 
     private final EmitterRepository emitterRepository;
-    private final EmitterMapper emitterMapper;
     private final RegionMapper regionMapper;
     private final DataSetService dataSetService;
 
     public MaritimeSerivceImpl(EmitterRepository emitterRepository, EmitterMapper emitterMapper, RegionMapper regionMapper, DataSetService dataSetService) {
         this.emitterRepository = emitterRepository;
-        this.emitterMapper = emitterMapper;
         this.regionMapper = regionMapper;
         this.dataSetService = dataSetService;
     }
 
     @Override
+    @Cacheable(value = "maritime", key="#years")
     public MaritimeDto getEmitters(List<Integer> years) {
         DataSet activeDataSet = dataSetService.findActiveDataSet();
         List<AggregateEmitter> novaScotiaEmitters = emitterRepository.sumYearsByFacilityProvinceTerritory(years, "Nova Scotia", activeDataSet).stream()

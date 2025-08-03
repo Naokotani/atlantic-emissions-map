@@ -18,7 +18,7 @@
             <strong>Upload New GHG Dataset</strong>
         </div>
         <div class="card-body">
-            <form th:action="@{/api/v1/dashboard}" method="post" enctype="multipart/form-data">
+            <form th:action="@{/api/v1/data}" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="file">Choose File</label>
                     <input type="file" name="file" id="file" class="form-control-file" required>

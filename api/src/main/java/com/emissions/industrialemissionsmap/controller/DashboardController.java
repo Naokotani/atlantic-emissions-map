@@ -27,7 +27,7 @@ public class DashboardController {
         dataSets.forEach(d -> d.setYears(d.getYears().stream().sorted().toList()));
         if (dataSets.isEmpty()) {
             log.error("No datasets found");
-            view = "initialDataset";
+            view = "initialDataSet";
         } else {
             model.addAttribute("datasets", dataSets);
         }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Component
@@ -28,7 +29,12 @@ public class SetupAdminUser {
         log.warn( "Users table is empty. Initializing admin user." );
         User admin = new User();
         List<User> users = userRepository.findAll();
-        if(users.isEmpty()) {
+        if(users.size() == 1 && !Objects.equals(users.getFirst().getName(), adminUsername)) {
+            userRepository.deleteAll();
+            admin.setName(adminUsername);
+            admin.setPassword(adminPassword);
+            userRepository.save(admin);
+        } else if (users.isEmpty()) {
             admin.setName(adminUsername);
             admin.setPassword(adminPassword);
             userRepository.save(admin);

@@ -8,6 +8,7 @@ import com.emissions.industrialemissionsmap.service.DataSetService;
 import com.emissions.industrialemissionsmap.service.UploadService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -44,6 +45,7 @@ public class DataController {
         return ResponseEntity.ok(dataSetDtos);
     }
 
+
     @GetMapping("/active")
     public ResponseEntity<DataSetDto>  getactiveDataSet() {
         DataSet dataSet = dataSetService.findActiveDataSet();
@@ -58,11 +60,11 @@ public class DataController {
         return ResponseEntity.ok(dataSetDto);
     }
 
-    // Todo appropriate status
+    // TODO appropriate status
     @DeleteMapping("/all")
     public ResponseEntity<String> deleteDatasets() {
         dataSetRepository.deleteAll();
-        return new ResponseEntity<>("Datasets deleted", HttpStatus.OK);
+       return new ResponseEntity<>("Datasets deleted", HttpStatus.OK);
     }
 
     @DeleteMapping()

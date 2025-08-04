@@ -2,12 +2,16 @@ package com.emissions.industrialemissionsmap.controller;
 
 import com.emissions.industrialemissionsmap.dto.DataSetDto;
 import com.emissions.industrialemissionsmap.service.DataSetService;
+import com.emissions.industrialemissionsmap.service.UploadService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -15,9 +19,11 @@ import java.util.List;
 @RequestMapping("/fantastic-friends/dashboard")
 public class DashboardController {
     final DataSetService dataSetService;
+    final UploadService uploadService;
 
-    public DashboardController(DataSetService dataSetService) {
+    public DashboardController(DataSetService dataSetService, UploadService uploadService) {
         this.dataSetService = dataSetService;
+        this.uploadService = uploadService;
     }
 
     @GetMapping
@@ -32,6 +38,14 @@ public class DashboardController {
             model.addAttribute("datasets", dataSets);
         }
         return view;
+    }
+
+    @PostMapping(consumes = {"multipart/form-data"})
+    public String uploadGhgData(
+            @RequestPart("file") MultipartFile file
+    ) throws IOException {
+        uploadService.uploadGhgData(file);
+        return "redirect:/fantastic-friends/dashboard";
     }
 
     @DeleteMapping("/all")

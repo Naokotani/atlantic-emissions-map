@@ -24,8 +24,8 @@ public class DataController {
     private final DataSetMapper dataSetMapper;
     private final DataSetService dataSetService;
 
-    public DataController(UploadService service, DataSetRepository dataSetRepository, DataSetMapper dataSetMapper, DataSetService dataSetService) {
-        this.service = service;
+    public DataController(UploadService uploadService, DataSetRepository dataSetRepository, DataSetMapper dataSetMapper, DataSetService dataSetService) {
+        this.service = uploadService;
         this.dataSetRepository = dataSetRepository;
         this.dataSetMapper = dataSetMapper;
         this.dataSetService = dataSetService;

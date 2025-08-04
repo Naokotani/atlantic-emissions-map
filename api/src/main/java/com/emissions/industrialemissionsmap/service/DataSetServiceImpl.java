@@ -4,6 +4,7 @@ import com.emissions.industrialemissionsmap.dto.DataSetDto;
 import com.emissions.industrialemissionsmap.mapper.DataSetMapper;
 import com.emissions.industrialemissionsmap.model.DataSet;
 import com.emissions.industrialemissionsmap.repository.DataSetRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class DataSetServiceImpl implements DataSetService {
     private final DataSetRepository dataSetRepository;
@@ -56,6 +58,7 @@ public class DataSetServiceImpl implements DataSetService {
 
     @Override
     public DataSetDto deleteDataSetById(long id) throws ResponseStatusException {
+        log.error("deleteDataSetById");
         DataSet dataSet = dataSetRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         dataSetRepository.deleteById(id);

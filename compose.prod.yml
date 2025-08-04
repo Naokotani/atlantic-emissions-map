@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     environment:
       # Sets the password for the database user.
-      POSTGRES_PASSWORD: secret
+      - POSTGRES_PASSWORD
     #Exposes port 5432 to the host.
     ports:
       - 5432:5432

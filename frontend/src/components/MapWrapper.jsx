@@ -48,7 +48,6 @@ function MapWrapper() {
         const apiUrl = `/api/v1/region/maritime?years=${yearsParam}`;
         const response = await fetch(apiUrl);
         const data = await response.json();
-        console.log(data);
 
         let allFacilities;
         if (filters.province === "all") {
@@ -98,7 +97,6 @@ function MapWrapper() {
 
     try {
       const apiUrl = `/api/v1/details?ghgrpId=${facilityId}`;
-      console.log("Fetching details for:", facilityId);
 
       const response = await fetch(apiUrl);
       if (!response.ok) {
@@ -108,7 +106,6 @@ function MapWrapper() {
       }
 
       const detailsData = await response.json();
-      console.log("Raw API Response:", JSON.stringify(detailsData, null, 2));
 
       setFacilityDetails((prev) => {
         const newState = {

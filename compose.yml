@@ -67,8 +67,8 @@ services:
 # Creates the volume.
 volumes:
   ghg-data:
+    driver: local
 # Creates the network. Can later create a frontend network to seperate
 # the frontend and backend.
 networks:
   backend:
-  frontend:

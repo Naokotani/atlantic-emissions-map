@@ -7,6 +7,7 @@
   float: right;
 }
 
+
 .leaflet-container {
   width: 100%;
   height: 70vh;
@@ -21,6 +22,7 @@
   display: flex;
   flex-direction: row;
 }
+
 
 .map-filter-form {
   width: 20%;
@@ -60,11 +62,12 @@
   color: #dddddd;
   font-weight: 800;
   white-space: nowrap;
-  width: 30%; /* Fixed width for labels */
+  width: 30%;
 }
 
 .map-filter-form .filter-group select {
-  width: 70%; /* Fixed width for selects in filter groups */
+  width: 70%;
+  /* Fixed width for selects in filter groups */
   margin-bottom: 0;
 }
 
@@ -73,7 +76,8 @@
   background-color: #121212;
   color: #dddddd;
   border-radius: 6px;
-  box-shadow: 0 0 0 2px #8b7d3a; /* Dark gold border */
+  box-shadow: 0 0 0 2px #8b7d3a;
+  /* Dark gold border */
   padding: 0;
   overflow: hidden;
   max-width: 300px;
@@ -87,7 +91,8 @@
 
 .leaflet-popup-tip {
   background-color: #121212;
-  box-shadow: 0 0 0 2px #8b7d3a; /* Match the border color */
+  box-shadow: 0 0 0 2px #8b7d3a;
+  /* Match the border color */
 }
 
 .popup-content {
@@ -204,11 +209,36 @@
   animation: popup-fade 0.2s ease-out;
 }
 
+@media (max-width: 600px) {
+  .map-section {
+    display: grid;
+    grid-template-areas:
+      "second"
+      "first";
+  }
+
+  .map-filter-form {
+    grid-area: first;
+    width: 100%;
+    margin-top: 3em;
+  }
+
+  .map-container {
+    grid-area: second;
+    width: 100vw;
+  }
+
+  .leaflet-container {
+    width: 100vw;
+  }
+}
+
 @keyframes popup-fade {
   from {
     opacity: 0;
     transform: translateY(5px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
